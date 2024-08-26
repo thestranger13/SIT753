@@ -14,28 +14,29 @@ pipeline {
             }
         }
 
+ 
         // stage two
         stage('Unit and Integration Tests') {
             steps {
                 echo 'Running unit tests with TestNG and integration tests with Selenium'
-                // sh 'mvn test -Dtest=*UnitTest'
-                // sh 'mvn test -Dtest=*IntegrationTest'
                 echo 'Using TestNG for unit tests'
                 echo 'Using Selenium for integration tests'
-            }         
-            // an email notification will be sent to the developer (my Deakin email) after every test regardless of the outcome 
+                // sh 'mvn test -Dtest=*UnitTest'
+                // sh 'mvn test -Dtest=*IntegrationTest'
+            }
             post {
                 always {
                     script {
-                        // Send email with the logs as attachment using emailext
+                        // Send email with the logs as attachment 
                         emailext to: 'S223646635@deakin.edu.au',
                                  subject: "Unit and Integration Test Stage Status: ${currentBuild.result}",
-                                 body: "Hi, the unit and integration test stage has completed with the following status: ${currentBuild.result}. The logs has been attached. Thank you.",
-                                 // attachments: "${env.WORKSPACE}/unit_integration_tests.log"
+                                 body: "Hi, the unit and integration test stage has completed with the following status: ${currentBuild.result}. The logs have been attached. Thank you."
+                        // attachments: "${env.WORKSPACE}/unit_integration_tests.log"
                     }
                 }
             }
         }
+
 
         //stage three
         stage('Code Analysis') {
@@ -45,26 +46,26 @@ pipeline {
             }
         }
 
-        //stage four 
+         // Stage four
         stage('Security Scan') {
             steps {
                 echo 'Performing security scan with OWASP ZAP'
+                echo 'Using OWASP ZAP for security scan'
                 // sh 'zap-cli quick-scan --self-contained --start-options "-config api.disablekey=true" $TARGET_URL'
-                // Create fake log content for security scan
             }
-            // an email notification will be sent to the developer (my Deakin email) after every test regardless of the outcome 
             post {
                 always {
                     script {
-                        // Send email with the logs as attachment using emailext
-                          emailext to: 'S223646635@deakin.edu.au',
+                        // Send email with the logs as attachment
+                        emailext to: 'S223646635@deakin.edu.au',
                                  subject: "Security Scan Status: ${currentBuild.result}",
-                                 body: "Hi, the security scan has completed with the following status: ${currentBuild.result}. The logs has been attached. Thank you.",
-                                // attachments: "${env.WORKSPACE}/security_scan.log"                    
-                            }
-                        }
+                                 body: "Hi, the security scan has completed with the following status: ${currentBuild.result}. Thank you."
+                        // attachments: "${env.WORKSPACE}/security_scan.log"
+                    }
                 }
+            }
         }
+
         // stage five
         stage('Deploy to Staging') {
             steps {
