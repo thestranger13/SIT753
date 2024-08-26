@@ -21,10 +21,17 @@ pipeline {
             // an email notification will be sent to the developer (my Deakin email) after every test regardless of the outcome 
             post {
                 always {
-                    emailext attachLog: true,
-                        subject: "Unit and Integration Test Stage Status: ${currentBuild.result}",
-                        body: "Hi, the unit and integration test stage has completed with the following status: ${currentBuild.result}. Thank you.",
-                        to: 'S223646635@deakin.edu.au'
+                    script {
+                        // Save the build log to a file for attachment 
+                        def logFile = new File("${env.WORKSPACE}/unit_integration_tests.log")
+                        logFile.write(currentBuild.rawBuild.getLog().join("\n"))
+
+                        // Send email with the logs as attachment
+                        mail to: 'S223646635@deakin.edu.au',
+                             subject: "Unit and Integration Test Stage Status: ${currentBuild.result}",
+                             body: "Hi, the unit and integration test stage has completed with the following status: ${currentBuild.result}. Thank you.",
+                             attachments: "${env.WORKSPACE}/unit_integration_tests.log"
+                    }
                 }
             }
 
@@ -45,10 +52,17 @@ pipeline {
             // an email notification will be sent to the developer (my Deakin email) after every test regardless of the outcome 
             post {
                 always {
-                    emailext attachLog: true,
-                        subject: "Security Scan Status: ${currentBuild.result}",
-                        body: "Hi, the security scan has completed with the following status: ${currentBuild.result}. Thank you.",
-                        to: 'S223646635@deakin.edu.au'
+                    script {
+                        // Save the build log to a file as attachment 
+                        def logFile = new File("${env.WORKSPACE}/security_scan.log")
+                        logFile.write(currentBuild.rawBuild.getLog().join("\n"))
+
+                        // Send email with the logs as attachment
+                        mail to: 'S223646635@deakin.edu.au',
+                             subject: "Security Scan Status: ${currentBuild.result}",
+                             body: "Hi, the security scan has completed with the following status: ${currentBuild.result}. Thank you.",
+                             attachments: "${env.WORKSPACE}/security_scan.log"
+                    }
                 }
             }
         }
