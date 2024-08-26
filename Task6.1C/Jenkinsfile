@@ -59,7 +59,7 @@ pipeline {
                         // Send email with the logs as attachment
                         emailext to: 'S223646635@deakin.edu.au',
                                  subject: "Security Scan Status: ${currentBuild.result}",
-                                 body: "Hi, the security scan has completed with the following status: ${currentBuild.result}. Thank you."
+                                 body: "Hi, the security scan has completed with the following status: ${currentBuild.result}. The logs have been attached. Thank you."
                         // attachments: "${env.WORKSPACE}/security_scan.log"
                     }
                 }
