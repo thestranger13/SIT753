@@ -2,7 +2,9 @@ pipeline {
     // run on any available agent 
     agent any
     // starting the different stages   
+
     stages {
+
         // stage one
         stage('Build') {
             steps {
@@ -11,6 +13,7 @@ pipeline {
                 echo 'Using Maven to build the code'
             }
         }
+
         // stage two
         stage('Unit and Integration Tests') {
             steps {
@@ -20,7 +23,7 @@ pipeline {
                 echo 'Using TestNG for unit tests'
                 echo 'Using Selenium for integration tests'
                 }
-            }
+            }                
             // an email notification will be sent to the developer (my Deakin email) after every test regardless of the outcome 
             post {
                 always {
@@ -38,13 +41,14 @@ pipeline {
                         """
                         writeFile file: "${env.WORKSPACE}/unit_integration_tests.log", text: LogContent
                         emailext to: 'S223646635@deakin.edu.au',
-                                subject: "Unit and Integration Test Stage Status: ${currentBuild.result}",
-                                body: "Hi, the unit and integration test stage has completed with the following status: ${currentBuild.result}. Thank you.",
-                                attachments: "${env.WORKSPACE}/unit_integration_tests.log"
+                                 subject: "Unit and Integration Test Stage Status: ${currentBuild.result}",
+                                 body: "Hi, the unit and integration test stage has completed with the following status: ${currentBuild.result}. Thank you.",
+                                 attachments: "${env.WORKSPACE}/unit_integration_tests.log"
                     }
                 }
             }
         }
+
         //stage three
         stage('Code Analysis') {
             steps {
@@ -52,13 +56,13 @@ pipeline {
                 // sh 'mvn sonar:sonar'
             }
         }
+
         //stage four 
         stage('Security Scan') {
             steps {
                 echo 'Performing security scan with OWASP ZAP'
                 // sh 'zap-cli quick-scan --self-contained --start-options "-config api.disablekey=true" $TARGET_URL'
                 // Create fake log content for security scan
-                script {
                     def LogContent = """\
                     [INFO] Starting security scan...
                     [INFO] Scanning for vulnerabilities...
@@ -66,6 +70,7 @@ pipeline {
                     [INFO] Scan completed with no issue.
                     """
                     writeFile file: "${env.WORKSPACE}/security_scan.log", text: LogContent
+                }
             }
             // an email notification will be sent to the developer (my Deakin email) after every test regardless of the outcome 
             post {
@@ -103,5 +108,3 @@ pipeline {
                 echo 'Using AWS EC2 to deploy to production'
             }
         }
-    }
-}
