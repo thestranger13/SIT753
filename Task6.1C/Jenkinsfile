@@ -28,10 +28,8 @@ pipeline {
                     [INFO] Integration test passed.
                     [INFO] All tests completed.
                     """
-                    writeFile file:
-                    "${env.WORKSPACE}/unit_integration_tests.log", text: LogContent
+                    writeFile file: "${env.WORKSPACE}/unit_integration_tests.log", text: LogContent
                 }
-
             }
             // an email notification will be sent to the developer (my Deakin email) after every test regardless of the outcome 
             post {
@@ -45,7 +43,6 @@ pipeline {
                     }
                 }
             }
-
         }
         //stage three
         stage('Code Analysis') {
@@ -68,6 +65,7 @@ pipeline {
                     [INFO] Scan completed with no issue.
                     """
                     writeFile file: "${env.WORKSPACE}/security_scan.log", text: LogContent
+                }
             }
             // an email notification will be sent to the developer (my Deakin email) after every test regardless of the outcome 
             post {
@@ -85,7 +83,7 @@ pipeline {
         // stage five
         stage('Deploy to Staging') {
             steps {
-                echo 'Deploying the application to a staging serve i.e. Google Cloud Platform (GCP)'
+                echo 'Deploying the application to a staging server i.e. Google Cloud Platform (GCP)'
                 // sh 'gcloud app deploy app.yaml --project=SIT753-Task-6-3C'
             }
         }
