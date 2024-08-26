@@ -29,6 +29,7 @@ pipeline {
                     [INFO] All tests completed.
                     """
                     writeFile file: "${env.WORKSPACE}/unit_integration_tests.log", text: LogContent
+                    sh 'ls -l ${env.WORKSPACE}'
                 }
             }
             // an email notification will be sent to the developer (my Deakin email) after every test regardless of the outcome 
@@ -65,6 +66,7 @@ pipeline {
                     [INFO] Scan completed with no issue.
                     """
                     writeFile file: "${env.WORKSPACE}/security_scan.log", text: LogContent
+                    sh 'ls -l ${env.WORKSPACE}'
                 }
             }
             // an email notification will be sent to the developer (my Deakin email) after every test regardless of the outcome 
