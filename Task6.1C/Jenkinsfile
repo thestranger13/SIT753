@@ -8,6 +8,7 @@ pipeline {
             steps {
                 echo 'Building the code using a build automation tool to compile and package the code i.e. Maven'
                 // sh 'mvn clean package' 
+                echo 'Using Maven to build the code'
             }
         }
         // stage two
@@ -16,20 +17,8 @@ pipeline {
                 echo 'Running unit tests with TestNG and integration tests with Selenium'
                 // sh 'mvn test -Dtest=*UnitTest'
                 // sh 'mvn test -Dtest=*IntegrationTest'
-                // create log content
-                script {
-                    def LogContent = """\
-                    [INFO] Running unit tests with TestNG...
-                    [INFO] TestNG test suite started.
-                    [INFO] Test case 1 passed.
-                    [INFO] Test case 2 passed.
-                    [INFO] Running Integration tests with Selenium...
-                    [INFO] Integration test suite started.
-                    [INFO] Integration test passed.
-                    [INFO] All tests completed.
-                    """
-                    writeFile file: "${env.WORKSPACE}/unit_integration_tests.log", text: LogContent
-                    sh 'ls -l ${env.WORKSPACE}'
+                echo 'Using TestNG for unit tests'
+                echo 'Using Selenium for integration tests'
                 }
             }
             // an email notification will be sent to the developer (my Deakin email) after every test regardless of the outcome 
@@ -37,6 +26,17 @@ pipeline {
                 always {
                     script {
                         // Send email with the logs as attachment using emailext
+                        def LogContent = """\
+                        [INFO] Running unit tests with TestNG...
+                        [INFO] TestNG test suite started.
+                        [INFO] Test case 1 passed.
+                        [INFO] Test case 2 passed.
+                        [INFO] Running Integration tests with Selenium...
+                        [INFO] Integration test suite started.
+                        [INFO] Integration test passed.
+                        [INFO] All tests completed.
+                        """
+                        writeFile file: "${env.WORKSPACE}/unit_integration_tests.log", text: LogContent
                         emailext to: 'S223646635@deakin.edu.au',
                                 subject: "Unit and Integration Test Stage Status: ${currentBuild.result}",
                                 body: "Hi, the unit and integration test stage has completed with the following status: ${currentBuild.result}. Thank you.",
@@ -66,8 +66,6 @@ pipeline {
                     [INFO] Scan completed with no issue.
                     """
                     writeFile file: "${env.WORKSPACE}/security_scan.log", text: LogContent
-                    sh 'ls -l ${env.WORKSPACE}'
-                }
             }
             // an email notification will be sent to the developer (my Deakin email) after every test regardless of the outcome 
             post {
@@ -77,16 +75,17 @@ pipeline {
                           emailext to: 'S223646635@deakin.edu.au',
                                  subject: "Security Scan Status: ${currentBuild.result}",
                                  body: "Hi, the security scan has completed with the following status: ${currentBuild.result}. Thank you.",
-                                 attachments: "${env.WORKSPACE}/security_scan.log"
-                    }
+                                attachments: "${env.WORKSPACE}/security_scan.log"                    
+                            }
+                        }
                 }
-            }
         }
         // stage five
         stage('Deploy to Staging') {
             steps {
                 echo 'Deploying the application to a staging server i.e. Google Cloud Platform (GCP)'
                 // sh 'gcloud app deploy app.yaml --project=SIT753-Task-6-3C'
+                echo 'Using Google Cloud Platform (GCP) to deploy'
             }
         }
         // stage six
@@ -101,6 +100,7 @@ pipeline {
             steps {
                 echo 'Deploying the application to a production server i.e. AWS EC2 production instance'
                 // sh 'ansible-playbook deploy-production.yml'
+                echo 'Using AWS EC2 to deploy to production'
             }
         }
     }
