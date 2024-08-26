@@ -21,9 +21,9 @@ pipeline {
             // an email notification will be sent to the developer (my Deakin email) after every test regardless of the outcome 
             post {
                 always {
-                    mail to: 'S223646635@deakin.edu.au'
+                    mail to: 'S223646635@deakin.edu.au',
                         subject: "Unit and Integration Test Stage Status: ${currentBuild.result}",
-                        body: "Hi, the unit and integration test stage has completed with the following status: ${currentBuild.result}. Thank you.",
+                        body: "Hi, the unit and integration test stage has completed with the following status: ${currentBuild.result}. Thank you."
                 }
             }
 
@@ -44,9 +44,9 @@ pipeline {
             // an email notification will be sent to the developer (my Deakin email) after every test regardless of the outcome 
             post {
                 always {
-                    mail to: 'S223646635@deakin.edu.au'
+                    mail to: 'S223646635@deakin.edu.au',
                         subject: "Security Scan Status: ${currentBuild.result}",
-                        body: "Hi, the security scan has completed with the following status: ${currentBuild.result}. Thank you.",
+                        body: "Hi, the security scan has completed with the following status: ${currentBuild.result}. Thank you."
                 }
             }
         }
