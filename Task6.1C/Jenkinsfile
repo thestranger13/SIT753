@@ -108,3 +108,4 @@ pipeline {
                 echo 'Using AWS EC2 to deploy to production'
             }
         }
+    }
