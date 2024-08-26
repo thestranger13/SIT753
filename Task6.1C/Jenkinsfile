@@ -24,8 +24,7 @@ pipeline {
                     script {
                         // Save the build log to a file for attachment 
                     def logFilePath = "${env.WORKSPACE}/unit_integration_tests.log"
-                    writeFile file: logFilePath, text: currentBuild.rawBuild.getLog().join("\n")
-
+                    writeFile file: logFilePath, text: currentBuild.getLog().join("\n")
                         // Send email with the logs as attachment
                         mail to: 'S223646635@deakin.edu.au',
                              subject: "Unit and Integration Test Stage Status: ${currentBuild.result}",
@@ -55,8 +54,7 @@ pipeline {
                     script {
                         // Save the build log to a file as attachment 
                         def logFilePath = "${env.WORKSPACE}/security_scan.log"
-                        writeFile file: logFilePath, text: currentBuild.rawBuild.getLog().join("\n")
-
+                        writeFile file: logFilePath, text: currentBuild.getLog().join("\n")
                         // Send email with the logs as attachment
                         mail to: 'S223646635@deakin.edu.au',
                              subject: "Security Scan Status: ${currentBuild.result}",
