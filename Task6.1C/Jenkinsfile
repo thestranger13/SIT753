@@ -22,8 +22,7 @@ pipeline {
                 // sh 'mvn test -Dtest=*IntegrationTest'
                 echo 'Using TestNG for unit tests'
                 echo 'Using Selenium for integration tests'
-                }
-            }                
+            }         
             // an email notification will be sent to the developer (my Deakin email) after every test regardless of the outcome 
             post {
                 always {
@@ -63,6 +62,7 @@ pipeline {
                 echo 'Performing security scan with OWASP ZAP'
                 // sh 'zap-cli quick-scan --self-contained --start-options "-config api.disablekey=true" $TARGET_URL'
                 // Create fake log content for security scan
+                script {
                     def LogContent = """\
                     [INFO] Starting security scan...
                     [INFO] Scanning for vulnerabilities...
