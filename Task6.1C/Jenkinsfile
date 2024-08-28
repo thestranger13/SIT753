@@ -5,6 +5,16 @@ pipeline {
 
     stages {
 
+        // creation of dummy logs
+        stage('Create Logs') {
+            steps {
+                script {
+                    sh 'echo "Unit and integration test logs" > unit_integration_tests.log'
+                    sh 'echo "Security scan logs" > security_scan.log'
+                }
+            }
+        }
+
         // stage one
         stage('Build') {
             steps {
@@ -31,7 +41,7 @@ pipeline {
                         emailext to: 'S223646635@deakin.edu.au',
                                  subject: "Unit and Integration Test Stage Status: ${currentBuild.result}",
                                  body: "Hi, the unit and integration test stage has completed with the following status: ${currentBuild.result}. The logs have been attached. Thank you."
-                        // attachments: "${env.WORKSPACE}/unit_integration_tests.log"
+                                 attachmentsPattern: 'unit_integration_tests.log'
                     }
                 }
             }
@@ -60,7 +70,7 @@ pipeline {
                         emailext to: 'S223646635@deakin.edu.au',
                                  subject: "Security Scan Status: ${currentBuild.result}",
                                  body: "Hi, the security scan has completed with the following status: ${currentBuild.result}. The logs have been attached. Thank you."
-                        // attachments: "${env.WORKSPACE}/security_scan.log"
+                                 attachmentsPattern: 'security_scan.log'
                     }
                 }
             }
