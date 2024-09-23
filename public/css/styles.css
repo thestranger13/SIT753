@@ -1,0 +1,88 @@
+/*dedicated font*/
+body{
+    font-family: Verdana;
+    font-size: 16px;
+    background-color: lightyellow;
+}
+
+/*navigation style*/
+nav {
+    background: black;
+}
+
+nav .brand-logo {
+    color: #ffffff;
+    padding-left: 15px;
+}
+
+nav ul a {
+    color: #ffffff;
+}
+
+nav ul a:hover {
+    text-decoration: underline;
+    background-color: rgba(0,0,0,0.1);
+}
+
+/*header style*/
+header {
+    color: black;
+    padding: 100px 0 50px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+
+/*form style*/
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form .input-field {
+    width: 100%;
+    max-width: 400px;
+}
+
+form button {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 400px;
+}
+/*result style*/
+#result {
+    margin-top: 20px;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+/*card style*/
+.card {
+    height: 100%;
+}
+
+.card .card-image {
+    height: 200px;
+    overflow: hidden;
+}
+
+.card .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/*consistent footer style*/
+footer {
+    font-style: italic;
+    font-family: Verdana;
+    background-color: black;
+    color: white; 
+    text-align: center; 
+    padding: 20px 0; 
+    margin-top: 20px;
+}

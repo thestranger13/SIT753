@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIT725 Task 3.2P</title>
+    <!-- Link to Materialize & CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation bar -->
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo">Vehicle Checker</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="#">Home</a></li>
+                <li><a href="#" onclick="showSection('checker')">Checker</a></li>
+                <li><a href="#" id="saved-vehicles-link">Saved Vehicles</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+        <!-- Vehicle Checker -->
+        <main class="container">
+            <section id="checker">
+                <h1 class="center-align">Is My Vehicle Registered?</h1>
+                <!-- Vehicle Checker-->
+                <div class="row">
+                    <form id="vehicle-form" class="col s12">
+                        <div class="input-field">
+                            <input type="text" id="vehicle" name="vehicle" maxlength="6" pattern="\d{6}" required placeholder="Enter Vehicle Number">
+                        </div>
+                        <button class="btn waves-effect waves-light" type="submit">Check</button>
+                    </form>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <p id="result" class="flow-text"></p>
+                    </div>
+                </div>
+            </section>
+    
+            <section id="savedVehicles" style="display:none;">
+                <h1 class="center-align">Saved Vehicles</h1>
+                <ul id="vehicleList" class="collection">
+                    <!--display saved vehicles-->
+                </ul>
+            </section>
+        
+        <!-- Materialize Cards -->
+        <div class="row">
+            <div class="col s12 m4">
+                <div class="card">
+                    <div class="card-image">
+                        <img src="images/LandroverLeft.jpg" alt="Landrover Left">
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m4">
+                <div class="card">
+                    <div class="card-image">
+                        <img src="images/LegoCentre.jpg" alt="Legoman">
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m4">
+                <div class="card">
+                    <div class="card-image">
+                        <img src="images/LandroverRight.webp" alt="Landrover Right">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Camille Ang</p>
+    </footer>
+
+    <!-- Link to Custom Javascript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="js/scripts.js"></script>
+
+    <!--websocket code-->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const socket = new WebSocket('ws://' + window.location.host);
+    
+            socket.onopen = () => {
+                console.log('WebSocket connection established');
+            };
+    
+            socket.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                console.log('Received data:', data);
+                
+                document.getElementById('result').textContent = 
+                    `Connected Clients: ${data.clients} | Vehicle Data Count: ${data.vehicleDataCount}`;
+            };
+    
+            socket.onclose = () => {
+                console.log('WebSocket connection closed');
+            };
+    
+            socket.onerror = (error) => {
+                console.error('WebSocket error:', error);
+            };
+        });
+    </script>
+
+</body>
+</html>
