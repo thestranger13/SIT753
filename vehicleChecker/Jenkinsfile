@@ -4,15 +4,8 @@ pipeline {
         // Checkout the code from the Git repository
         stage('Checkout SCM') {
             steps {
-                git url: 'https://github.com/thestranger13/SIT753.git', branch: 'main'
-            }
-        }
-
-        // List files to ensure necessary files are present
-        stage('List Files') {
-            steps {
                 script {
-                    sh 'ls -al'
+                    checkout scm
                 }
             }
         }
@@ -22,7 +15,7 @@ pipeline {
             steps {
                 script {
                     // Docker image: release version 1.0.0
-                    sh 'docker build -t vehicle-checker:v1.0.0 .'
+                    sh 'docker build -t vehicle-checker:v1.0.0 -f vehicleChecker/Dockerfile vehicleChecker/'
                 }
             }
         }
