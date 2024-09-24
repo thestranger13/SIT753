@@ -1,0 +1,10 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/vehicleChecker/ 
+hooks:
+  AfterInstall:
+    - location: deployment/scripts/after_install.sh
+      timeout: 300
+      runas: root
