@@ -55,15 +55,18 @@ pipeline {
                     script {
                         // Login to Heroku
                         sh 'heroku container:login'
+
+                        // Check images before pushing
+                        sh 'docker images' 
                         
                         // Tag the image with specific version
                         sh 'docker tag vehicle-checker:v1.0.0 registry.heroku.com/vehiclecheckerdeployment/web:v1.0.0'
                         
-                        // Check images before pushing
+                        // Check images after pushing
                         sh 'docker images' 
                         
                         // Push the Docker image to Heroku
-                        sh 'heroku container:push web --app vehiclecheckerdeployment'
+                        sh 'heroku container:push web --app vehiclecheckerdeployment --verbose'
                     }
                 }
             }
