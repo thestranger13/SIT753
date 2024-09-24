@@ -67,6 +67,10 @@ pipeline {
                         
                         // Push the Docker image to Heroku
                         sh 'heroku container:push web --app vehiclecheckerdeployment --verbose'
+
+                        // Release the Docker container
+                        sh 'heroku container:release web --app vehiclecheckerdeployment'
+
                     }
                 }
             }
