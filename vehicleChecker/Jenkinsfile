@@ -56,11 +56,8 @@ pipeline {
                         // Login to Heroku
                         sh 'heroku container:login'
                         
-                        // Set the stack (optional if already set)
-                        sh 'heroku stack:set container --app vehiclecheckerdeployment'
-                        
-                        // Tag the image 
-                        sh 'docker tag vehicle-checker:v1.0.0 registry.heroku.com/vehiclecheckerdeployment/web'
+                        // Tag the image with specific version
+                        sh 'docker tag vehicle-checker:v1.0.0 registry.heroku.com/vehiclecheckerdeployment/web:v1.0.0'
                         
                         // Check images before pushing
                         sh 'docker images' 
