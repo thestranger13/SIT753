@@ -55,27 +55,6 @@ pipeline {
                 }
             }
         }
-
-        // Release Stage using AWS CodeDeploy
-        stage('Release Stage') {
-            steps {
-                script {
-                    // Set variables for deployment
-                    def applicationName = "CodeDeployVC" 
-                    def deploymentGroupName = "VehicleCheckerDeployment"
-                    def revision = "file://path/to/appspec.yml" // Path to your appspec.yml file
-
-                    // Create a new deployment in AWS CodeDeploy
-                    sh """
-                    aws deploy create-deployment \
-                        --application-name ${applicationName} \
-                        --deployment-group-name ${deploymentGroupName} \
-                        --s3-location bucket=your-s3-bucket,key=your-app.zip,bundleType=zip \
-                        --file-exists-behavior OVERWRITE
-                    """
-                }
-            }
-        }
     }
     post {
         always {
