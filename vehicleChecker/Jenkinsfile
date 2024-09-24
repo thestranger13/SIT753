@@ -1,6 +1,14 @@
 pipeline {
     agent any
     stages {
+        // Check Docker Daemon 
+        stage('Check Docker Daemon') {
+            steps {
+                script {
+                    sh 'docker info' // This will fail if the Docker daemon isn't running
+                }
+            }
+        }
         // Build stage using Docker 
         stage('Build Stage') {
             steps {
@@ -38,7 +46,7 @@ pipeline {
                     sh 'docker rm vehicle-checker || true'
                     
                     // Run the new Docker container mapped to port3000
-                    sh 'docker run -d --name vehicle-checker -p 3000:3file000 vehicle-checker:v1.0.0'
+                    sh 'docker run -d --name vehicle-checker -p 3000:3000 vehicle-checker:v1.0.0'
                 }
             }
         }
