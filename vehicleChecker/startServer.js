@@ -12,8 +12,6 @@ let db;
 async function connectToDatabase() {
     if (!client) {
         client = new MongoClient(uri, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
             ssl: true,
             tlsAllowInvalidCertificates: true
         });

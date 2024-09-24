@@ -12,26 +12,28 @@ describe('Vehicle Checker API', function() {
 
     // connects to the database and closes after the test to clean up 
     before(async function() {
-      console.log('Connecting to database...');
-      try {
-          await connectToDatabase();
-          await new Promise(resolve => setTimeout(resolve, 1000)); 
-          console.log('Connected to database');
-      } catch (error) {
-          console.error('Failed to connect to database:', error);
-          throw error;
-      }
-  });
-
+        console.log('Connecting to database...');
+        try {
+            await connectToDatabase();
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Slight delay to ensure connection is stable
+            console.log('Connected to database');
+        } catch (error) {
+            console.error('Failed to connect to database:', error);
+            throw error;
+        }
+    });
+  
+    // New after hook to ensure graceful shutdown
     after(async function() {
-      console.log('Closing database connection...');
-      try {
-          await closeConnection();
-          console.log('Database connection closed');
-      } catch (error) {
-          console.error('Failed to close database connection:', error);
-      }
-  });
+        console.log('Closing database connection...');
+        try {
+            await new Promise(resolve => setTimeout(resolve, 500)); // Delay to ensure all operations complete
+            await closeConnection();
+            console.log('Database connection closed');
+        } catch (error) {
+            console.error('Failed to close database connection:', error);
+        }
+    });
 
     // Test (a) - validate that API correctly identifies a valid vehicle number
     it('should return valid response for a valid vehicle number', async function() {
