@@ -62,6 +62,8 @@ pipeline {
                 script {
                     withCredentials([string(credentialsId: 'HEROKU_API_KEY', variable: 'HEROKU_API_KEY')]) {
                         sh 'heroku container:login'
+                        // Set the stack to container before pushing
+                        sh 'heroku stack:set container --app vehiclecheckerdeployment || true'
                         sh 'heroku container:push web --app vehiclecheckerdeployment'
                         sh 'heroku container:release web --app vehiclecheckerdeployment'
                     }
