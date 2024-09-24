@@ -55,19 +55,22 @@ pipeline {
                     script {
                         // Login to Heroku
                         sh 'heroku container:login'
-                        // Set the stack
+                        
+                        // Set the stack (optional if already set)
                         sh 'heroku stack:set container --app vehiclecheckerdeployment'
+                        
                         // Tag the image 
                         sh 'docker tag vehicle-checker:v1.0.0 registry.heroku.com/vehiclecheckerdeployment/web'
-                        // Check images
+                        
+                        // Check images before pushing
                         sh 'docker images' 
+                        
                         // Push the Docker image to Heroku
                         sh 'heroku container:push web --app vehiclecheckerdeployment'
                     }
                 }
             }
         }
-    } // Closing brace for stages
 
     post {
         always {
