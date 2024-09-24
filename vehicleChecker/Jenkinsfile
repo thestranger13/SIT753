@@ -1,86 +1,10 @@
 pipeline {
     agent any
     stages {
-
-        // Build stage using Docker 
-        stage('Build Stage') {
+        stage('Test Docker') {
             steps {
-                script {
-                    // Docker image: release version 1.0.0
-                    sh 'docker build -t vehicle-checker:v1.0.0 -f vehicleChecker/Dockerfile vehicleChecker/'
-                }
+                sh 'docker ps'
             }
-        }
-
-        // Code Quality Analysis Stage using ESLint
-        stage('Code Quality Analysis Stage') {
-            steps {
-                script {
-                    // Ensure that the dependencies of the project have been installed
-                    sh 'npm install --prefix vehicleChecker' 
-                    // Run ESLint to check code quality
-                    sh 'npm run lint --prefix vehicleChecker' 
-                }
-            }
-        }
-
-        // Test Web Application using Mocha
-        stage('Test Stage') {
-            steps {
-                script {
-                    // Run the unit test using mocha 
-                    sh 'npm test --prefix vehicleChecker' 
-                }
-            }
-        }
-
-        // Deploy Docker Container
-        stage('Deploy Stage') {
-            steps {
-                script {
-                    // Stop and remove any existing container
-                    sh 'docker stop vehicle-checker || true'
-                    sh 'docker rm vehicle-checker || true'
-                    
-                    // Run the new Docker container mapped to port 4000
-                    sh 'docker run -d --name vehicle-checker -p 4000:4000 vehicle-checker:v1.0.0'
-                }
-            }
-        }
-
-       // Release Stage with Heroku
-        stage('Release') {
-            steps {
-                withCredentials([string(credentialsId: 'HEROKU_API_KEY', variable: 'HEROKU_API_KEY')]) {
-                    script {
-                        // Login to Heroku
-                        sh 'heroku container:login'
-
-                        // Check images before pushing
-                        sh 'docker images' 
-                        
-                        // Tag the image with specific version
-                        sh 'docker tag vehicle-checker:v1.0.0 registry.heroku.com/vehiclecheckerdeployment/web:v1.0.0'
-                        
-                        // Check images after pushing
-                        sh 'docker images' 
-                        
-                        // Push the Docker image to Heroku
-                        sh 'heroku container:push web --app vehiclecheckerdeployment --verbose'
-
-                        // Release the Docker container
-                        sh 'heroku container:release web --app vehiclecheckerdeployment'
-
-                    }
-                }
-            }
-        }
-    }
-
-    post {
-        always {
-            // Clean up old containers if necessary
-            sh 'docker rm -f vehicle-checker || true'
         }
     }
 }
