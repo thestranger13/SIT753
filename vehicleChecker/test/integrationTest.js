@@ -1,17 +1,16 @@
 const request = require('supertest');
 const { expect } = require('chai');
-const app = require('../server');
+const { app, server } = require('../server');  // Import the server to close later
 const { connectToDatabase, closeConnection } = require('../startServer');
 
 console.log('Starting Vehicle Checker API tests');
 
 // Integration test 
 describe('Vehicle Checker API', function() {
-  // add a delay due to more time required to conduct the testing 
-  this.timeout(10000); 
+    this.timeout(15000);  // Increased timeout to avoid premature test termination
 
-    // connects to the database and closes after the test to clean up 
     before(async function() {
+        process.env.PORT = 4000;  // Use a different port for tests
         console.log('Connecting to database...');
         try {
             await connectToDatabase();
@@ -22,8 +21,7 @@ describe('Vehicle Checker API', function() {
             throw error;
         }
     });
-  
-    // New after hook to ensure graceful shutdown
+
     after(async function() {
         console.log('Closing database connection...');
         try {
@@ -33,6 +31,18 @@ describe('Vehicle Checker API', function() {
         } catch (error) {
             console.error('Failed to close database connection:', error);
         }
+
+        // Close the server after all tests are done
+        await new Promise((resolve, reject) => {
+            server.close((err) => {
+                if (err) {
+                    console.error('Error closing server:', err);
+                    return reject(err);
+                }
+                console.log('Server closed');
+                resolve();
+            });
+        });
     });
 
     // Test (a) - validate that API correctly identifies a valid vehicle number
@@ -74,4 +84,3 @@ describe('Vehicle Checker API', function() {
 });
 
 console.log('All tests defined. About to execute!');
-

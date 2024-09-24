@@ -66,3 +66,5 @@ server.listen(port, async () => {
     console.log("Server listening on port:", port);
     await connectToDatabase();
 });
+
+module.exports = { app, server };  
