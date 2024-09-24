@@ -50,8 +50,8 @@ pipeline {
                     sh 'docker stop vehicle-checker || true'
                     sh 'docker rm vehicle-checker || true'
                     
-                    // Run the new Docker container mapped to port 3000
-                    sh 'docker run -d --name vehicle-checker -p 3000:3000 vehicle-checker:v1.0.0'
+                    // Run the new Docker container mapped to port 4000
+                    sh 'docker run -d --name vehicle-checker -p 4000:4000 vehicle-checker:v1.0.0'
                 }
             }
         }
