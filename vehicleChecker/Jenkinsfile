@@ -1,14 +1,6 @@
 pipeline {
     agent any
     stages {
-        // Checkout the code from the Git repository
-        stage('Checkout SCM') {
-            steps {
-                script {
-                    checkout scm
-                }
-            }
-        }
 
         // Build stage using Docker 
         stage('Build Stage') {
@@ -16,15 +8,6 @@ pipeline {
                 script {
                     // Docker image: release version 1.0.0
                     sh 'docker build -t vehicle-checker:v1.0.0 -f vehicleChecker/Dockerfile vehicleChecker/'
-                }
-            }
-        }
-
-        // verify if it is built - to be deleted 
-        stage('Verify Docker Image') {
-            steps {
-                script {
-                    sh 'docker images'
                 }
             }
         }
@@ -65,15 +48,6 @@ pipeline {
             }
         }
 
-        // to be removed 
-        stage('Verify Docker Images Before Push') {
-            steps {
-                script {
-                    sh 'docker images'
-                }
-            }
-        }
-
        // Release Stage with Heroku
         stage('Release') {
             steps {
@@ -85,6 +59,8 @@ pipeline {
                         sh 'heroku stack:set container --app vehiclecheckerdeployment'
                         // Tag the image 
                         sh 'docker tag vehicle-checker:v1.0.0 registry.heroku.com/vehiclecheckerdeployment/web'
+                        // Check images
+                        sh 'docker images' 
                         // Push the Docker image to Heroku
                         sh 'heroku container:push web --app vehiclecheckerdeployment'
                     }
