@@ -65,23 +65,23 @@ pipeline {
             }
         }
         
-        // Release Stage with Heroku
-            stage('Release') {
-                steps {
-                    withCredentials([string(credentialsId: 'HEROKU_API_KEY', variable: 'HEROKU_API_KEY')]) {
-                        script {
-                            // Login to Heroku
-                            sh 'heroku container:login'
-                            // Set the stack
-                            sh 'heroku stack:set container --app vehiclecheckerdeployment'
-                            // Push the Docker image to Heroku
-                            sh 'heroku container:push web --app vehiclecheckerdeployment'
-                        }
+       // Release Stage with Heroku
+        stage('Release') {
+            steps {
+                withCredentials([string(credentialsId: 'HEROKU_API_KEY', variable: 'HEROKU_API_KEY')]) {
+                    script {
+                        // Login to Heroku
+                        sh 'heroku container:login'
+                        // Set the stack
+                        sh 'heroku stack:set container --app vehiclecheckerdeployment'
+                        // Push the Docker image to Heroku
+                        sh 'heroku container:push web --app vehiclecheckerdeployment'
                     }
                 }
             }
-        } 
-    }
+        }
+    } // Closing brace for stages
+
     post {
         always {
             // Clean up old containers if necessary
