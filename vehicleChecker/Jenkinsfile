@@ -1,21 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('Check Docker Daemon') {
-            steps {
-                script {
-                    sh 'docker info'
-                }
-            }
-        }
-        stage('Debug Workspace') {
-            steps {
-                script {
-                    sh 'ls -la vehicleChecker'  // List files in the vehicleChecker directory
-                    sh 'git rev-parse HEAD'  // Show the current Git commit
-                }
-            }
-        }
         // Build stage using Docker 
         stage('Build Stage') {
             steps {
