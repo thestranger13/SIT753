@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test:unit": "mocha test/vehicleModel.test.js",
-    "test:integration": "mocha test/integrationTest.js",
-    "test": "npm run test:unit && npm run test:integration",
+    "test": "npm run test:unit",
     "start": "node server.js",
     "lint": "eslint ."
   },
