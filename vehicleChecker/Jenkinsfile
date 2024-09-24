@@ -11,7 +11,8 @@ pipeline {
         stage('Debug Workspace') {
             steps {
                 script {
-                    sh 'ls -la'  // List files in the current directory
+                    sh 'ls -la vehicleChecker'  // List files in the vehicleChecker directory
+                    sh 'git rev-parse HEAD'  // Show the current Git commit
                 }
             }
         }
@@ -20,7 +21,7 @@ pipeline {
             steps {
                 script {
                     // Docker image: release version 1.0.0
-                    sh 'docker build -t vehicle-checker:v1.0.0 .'
+                    sh 'docker build -t vehicle-checker:v1.0.0 -f vehicleChecker/Dockerfile vehicleChecker/'
                 }
             }
         }
@@ -37,8 +38,6 @@ pipeline {
         stage('Test Web Application') {
             steps {
                 script {
-                    // Ensure that the dependencies of the project have been installed
-                    sh 'npm install'
                     // Run the unit and integration tests using mocha and chai
                     sh 'npm test' 
                 }
