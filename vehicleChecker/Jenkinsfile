@@ -20,7 +20,7 @@ pipeline {
             }
         }
 
-        // Code Quality Analysis Stage
+        // Code Quality Analysis Stage using ESLint
         stage('Code Quality Analysis Stage') {
             steps {
                 script {
@@ -32,18 +32,18 @@ pipeline {
             }
         }
 
-        // Test Web Application
-        stage('Test Web Application') {
+        // Test Web Application using Mocha
+        stage('Test Stage') {
             steps {
                 script {
-                    // Run the unit and integration tests using mocha and chai
+                    // Run the unit test using mocha 
                     sh 'npm test --prefix vehicleChecker' 
                 }
             }
         }
 
         // Deploy Docker Container
-        stage('Deploy Docker Container') {
+        stage('Deploy Stage') {
             steps {
                 script {
                     // Stop and remove any existing container
@@ -55,6 +55,18 @@ pipeline {
                 }
             }
         }
+        
+        // Release Stage with Heroku
+        stage('Release') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'HEROKU_API_KEY', variable: 'HEROKU_API_KEY')]) {
+                        sh 'heroku container:login'
+                        sh 'heroku container:push web --app vehiclecheckerdeployment'
+                        sh 'heroku container:release web --app vehiclecheckerdeployment'
+                    }
+                }
+            }
     }
     post {
         always {
