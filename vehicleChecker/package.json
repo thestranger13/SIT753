@@ -7,7 +7,8 @@
     "test:unit": "mocha test/vehicleModel.test.js",
     "test:integration": "mocha test/integrationTest.js",
     "test": "npm run test:unit && npm run test:integration",
-    "start": "node server.js"
+    "start": "node server.js",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -39,7 +40,10 @@
     "6.2D"
   ],
   "devDependencies": {
+    "@eslint/js": "^9.11.1",
     "concurrently": "^8.2.2",
+    "eslint": "^9.11.1",
+    "globals": "^15.9.0",
     "install": "^0.13.0",
     "jest": "^29.7.0",
     "mocha": "^10.7.3",

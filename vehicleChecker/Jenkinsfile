@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+    stages {
+        // Build stage using Docker 
+        stage('Build Stage') {
+            steps {
+                script {
+                    // Docker image: release version 1.0.0
+                    sh 'docker build -t vehicle-checker:v1.0.0 .'
+                }
+            }
+        }
+        stage('Code Quality Analysis Stage') {
+            steps {
+                script {
+                    // this step ensures that the dependencies of the project have been installed
+                    sh 'npm install'
+                    // Run ESLint to check code quality
+                    sh 'npm run lint' 
+                }
+            }
+        }
+        stage('Test Web Application') {
+            steps {
+                script {
+                    // Ensure that the dependencies of the project have been installed
+                    sh 'npm install'
+                    // Run the unit and integration tests using mocha and chai
+                    sh 'npm test' 
+                }
+            }
+        }
+        stage('Deploy Docker Container') {
+            steps {
+                script {
+                    // Stop and remove any existing container - setting it so true ensures that the pipeline does not fail if the container is not running
+                    sh 'docker stop vehicle-checker || true'
+                    sh 'docker rm vehicle-checker || true'
+                    
+                    // Run the new Docker container mapped to port3000
+                    sh 'docker run -d --name vehicle-checker -p 3000:3file000 vehicle-checker:v1.0.0'
+                }
+            }
+        }
+    }
+}
