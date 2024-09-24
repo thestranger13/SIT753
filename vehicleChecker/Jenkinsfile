@@ -1,11 +1,17 @@
 pipeline {
     agent any
     stages {
-        // Check Docker Daemon 
         stage('Check Docker Daemon') {
             steps {
                 script {
-                    sh 'docker info' // This will fail if the Docker daemon isn't running
+                    sh 'docker info'
+                }
+            }
+        }
+        stage('Debug Workspace') {
+            steps {
+                script {
+                    sh 'ls -la'  // List files in the current directory
                 }
             }
         }
